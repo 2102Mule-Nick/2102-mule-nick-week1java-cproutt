@@ -38,6 +38,11 @@ public class EvaluationService {
 	 */
 	public String acronym(String phrase) {
 		// TODO Write an implementation for this method declaration
+		if(phrase.contains("-")) {
+			phrase = phrase.replace("-", " ");
+			System.out.println(phrase);
+		}
+		
 		String acr = "";
 		
 		String[] words = phrase.split("\\s");
@@ -223,23 +228,30 @@ public class EvaluationService {
 	 * NANP-countries, only 1 is considered a valid country code.
 	 */
 	public String cleanPhoneNumber(String string) {
-		char[] number = string.toCharArray();
-		int length = number.length;
-		
-		if(number[0] == '+' && number[1] == '1') {
-			number[0] = ' ';
-			number[1] = ' ';
-		}
-		
-		for(int i = 0; i < length; i++) {
-			if(number[i] == '.' || number[i] == '-' || number[i] == '(' || number[i] == ')') {
-				number[i] = ' ';
+		if(string.contains("abcdefghijklmnopqrstuvwxyz")){
+			throw new IllegalArgumentException("Must use only numbers");
+		} else if(string.length() < 10) {
+			throw new IllegalArgumentException("Must use only have 10 numbers");
+		} else {
+			char[] number = string.toCharArray();
+			int length = number.length;
+			
+			if(number[0] == '+' && number[1] == '1') {
+				number[0] = ' ';
+				number[1] = ' ';
 			}
+			
+			for(int i = 0; i < length; i++) {
+				if(number[i] == '.' || number[i] == '-' || number[i] == '(' || number[i] == ')') {
+					number[i] = ' ';
+				}
+			}
+			
+			String newPhone = new String(number);
+			newPhone = newPhone.replaceAll("\\s", "");
+			return newPhone;
 		}
 		
-		String newPhone = new String(number);
-		newPhone = newPhone.replaceAll("\\s", "");
-		return newPhone;
 	}
 
 	/**
