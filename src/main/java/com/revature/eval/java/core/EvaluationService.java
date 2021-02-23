@@ -101,18 +101,38 @@ public class EvaluationService {
 		}
 
 		public boolean isEquilateral() {
-			// TODO Write an implementation for this method declaration
-			return false;
+			if(getSideOne() == getSideTwo() && getSideTwo() == getSideThree()) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 
 		public boolean isIsosceles() {
-			// TODO Write an implementation for this method declaration
-			return false;
+			if(getSideOne() == getSideTwo() && getSideTwo() != getSideThree()) {
+				return true;
+			} else if(getSideOne() != getSideTwo() && getSideTwo() == getSideThree()){
+				return true;
+			} else if(getSideOne() == getSideThree() && getSideTwo() != getSideThree()){
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		private void elseif(boolean b) {
+			// TODO Auto-generated method stub
+			
 		}
 
 		public boolean isScalene() {
-			// TODO Write an implementation for this method declaration
-			return false;
+			if(getSideOne() != getSideTwo() && getSideTwo() != getSideThree()) {
+				return true;
+			} else if(getSideOne() != getSideThree() && getSideTwo() != getSideThree()){
+				return true;
+			} else {
+				return false;
+			}
 		}
 
 	}
@@ -133,8 +153,42 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int getScrabbleScore(String string) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		// for each letter in the string compare to letter values
+		// add to score
+		int score = 0;
+		String uppercase = string.toUpperCase();
+		char[] letters = uppercase.toCharArray();
+		
+		for(int i = 0; i < letters.length; i++) {
+			char letter = letters[i];
+			switch(letter) {
+			case 'A': case 'E': case 'I': case 'O': case 'U': case 'L': case 'N': case 'R': case 'S': case 'T':
+				score += 1;
+				break;
+			case 'D': case 'G':
+				score += 2;
+				break;
+			case 'B': case 'C': case 'M': case 'P':
+				score += 3;
+				break;
+			case 'F': case 'H': case 'V': case 'W': case 'Y':
+				score += 4;
+				break;
+			case 'K':
+				score += 5;
+				break;
+			case 'J': case 'X':
+				score += 8;
+				break;
+			case 'Q': case 'Z':
+				score += 10;
+				break;
+			default:
+				break;
+			}
+		}
+		
+		return score;
 	}
 
 	/**
