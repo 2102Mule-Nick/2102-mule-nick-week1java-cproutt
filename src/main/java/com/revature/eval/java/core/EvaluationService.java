@@ -223,8 +223,23 @@ public class EvaluationService {
 	 * NANP-countries, only 1 is considered a valid country code.
 	 */
 	public String cleanPhoneNumber(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		char[] number = string.toCharArray();
+		int length = number.length;
+		
+		if(number[0] == '+' && number[1] == '1') {
+			number[0] = ' ';
+			number[1] = ' ';
+		}
+		
+		for(int i = 0; i < length; i++) {
+			if(number[i] == '.' || number[i] == '-' || number[i] == '(' || number[i] == ')') {
+				number[i] = ' ';
+			}
+		}
+		
+		String newPhone = new String(number);
+		newPhone = newPhone.replaceAll("\\s", "");
+		return newPhone;
 	}
 
 	/**
