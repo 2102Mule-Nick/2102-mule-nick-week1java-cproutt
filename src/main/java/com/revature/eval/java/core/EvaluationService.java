@@ -1,6 +1,8 @@
 package com.revature.eval.java.core;
 
 import java.time.temporal.Temporal;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +42,6 @@ public class EvaluationService {
 		// TODO Write an implementation for this method declaration
 		if(phrase.contains("-")) {
 			phrase = phrase.replace("-", " ");
-			System.out.println(phrase);
 		}
 		
 		String acr = "";
@@ -228,10 +229,13 @@ public class EvaluationService {
 	 * NANP-countries, only 1 is considered a valid country code.
 	 */
 	public String cleanPhoneNumber(String string) {
-		if(string.contains("abcdefghijklmnopqrstuvwxyz")){
-			throw new IllegalArgumentException("Must use only numbers");
-		} else if(string.length() < 10) {
+		String alpha = "abcdefghijklmnopqrstuvwxyz";
+		String symbol = "!@#$%^&*";
+		
+		if(string.length() < 10){
 			throw new IllegalArgumentException("Must use only have 10 numbers");
+		} else if(string.contains(alpha) || string.contains(symbol)) {
+			throw new IllegalArgumentException("Must use only numbers");
 		} else {
 			char[] number = string.toCharArray();
 			int length = number.length;
@@ -265,7 +269,24 @@ public class EvaluationService {
 	 */
 	public Map<String, Integer> wordCount(String string) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		
+		String[] phrase = string.split(" ");
+		int count = 1;
+		
+		for(String word : phrase) {
+			map.put(word, count);
+		}
+		
+		/* for(int i = 0; i < phrase.length; i++) {
+			for(int j = 1; j < phrase.length - 1; j++) {
+				if(phrase[i] == phrase[j]) {
+					count++;
+				}
+				map.put(phrase[i], count);
+			}
+		}*/
+		return map;
 	}
 
 	/**
@@ -307,6 +328,16 @@ public class EvaluationService {
 		private List<T> sortedList;
 
 		public int indexOf(T t) {
+			
+			/*while() {
+				int mid = () /2;
+					if() {
+					} else if() {
+					} else if() {
+					}
+					return index;
+				}
+			}*/
 			// TODO Write an implementation for this method declaration
 			return 0;
 		}
@@ -344,8 +375,26 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String toPigLatin(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		//String con = "bcdfghjklmnpqrstvwxyz";
+		String vowels = "aeiou";
+		
+		String newString = "";
+		char[] letters = string.toCharArray();
+		
+		for(int i = 0; i < letters.length; i++) {
+			char letter = letters[i];
+			//char nextLetter = letters[i + 1];
+			if(i == 0) {
+				if(letters[i] == vowels.charAt(i)) {
+					newString = string + "ay";
+				} 
+			} else {
+				char oldLetter = letter;
+				String takeLetter = string.replace(letter, ' ');
+				newString = takeLetter.trim() + oldLetter + "ay";
+			}
+		}
+		return newString;
 	}
 
 	/**
