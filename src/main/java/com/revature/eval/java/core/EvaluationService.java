@@ -488,8 +488,17 @@ public class EvaluationService {
 		}
 
 		public String rotate(String string) {
-			// TODO Write an implementation for this method declaration
-			return null;
+			String s = "";
+			int len = string.length();
+			for(int i = 0; i < len; i++) {
+				char c = (char)(string.charAt(i) + key);
+				if(c > 'z') {
+					s += (char)(string.charAt(i) - (26 - key));
+				} else {
+					s += (char)(string.charAt(i) + key);
+				}
+			}
+			return s;
 		}
 
 	}
@@ -506,9 +515,28 @@ public class EvaluationService {
 	 * @param i
 	 * @return
 	 */
-	public int calculateNthPrime(int i) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+	public int calculateNthPrime(int n) {
+		if(n == 0) {
+			throw new IllegalArgumentException();
+		}
+		
+		int num, count, i;
+		num = 1;
+		count = 0;
+		
+		while(count < n) {
+			num = num + 1;
+			for(i = 2; i <= num; i++) {
+				if(num % i == 0) {
+					break;
+				}
+			}
+			if(i == num) {
+				count = count + 1;
+			}
+		}
+		
+		return num;
 	}
 
 	/**
