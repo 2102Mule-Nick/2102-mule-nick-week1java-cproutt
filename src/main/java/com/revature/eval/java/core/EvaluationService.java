@@ -1,6 +1,7 @@
 package com.revature.eval.java.core;
 
 import java.time.temporal.Temporal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -413,8 +414,21 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isArmstrongNumber(int input) {
-		// TODO Write an implementation for this method declaration
-		return false;
+		int tempNumber, digit, digitCubeSum = 0;
+		tempNumber = input;
+		
+		while(tempNumber != 0) {
+			// Current number
+			digit = tempNumber % 10;
+			digitCubeSum = digitCubeSum + digit * digit * digit;
+			tempNumber /= 10;
+		}
+		
+		if(digitCubeSum == input) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -428,8 +442,15 @@ public class EvaluationService {
 	 * @return
 	 */
 	public List<Long> calculatePrimeFactorsOf(long l) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		List<Long> list = new ArrayList<Long>();
+		
+		for(long i = 2; i <= l; i++) {
+	         while(l % i == 0) {
+	            list.add(i);
+	            l /= i;
+	         }
+	      }
+		return list;
 	}
 
 	/**
