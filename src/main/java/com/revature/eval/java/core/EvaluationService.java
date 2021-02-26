@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class EvaluationService {
 
-	/**
+	/** Completed
 	 * 1. Without using the StringBuilder or StringBuffer class, write a method that
 	 * reverses a String. Example: reverse("example"); -> "elpmaxe"
 	 * 
@@ -31,7 +31,7 @@ public class EvaluationService {
 		}
 	}
 
-	/**
+	/** Completed
 	 * 2. Convert a phrase to its acronym. Techies love their TLA (Three Letter
 	 * Acronyms)! Help generate some jargon by writing a program that converts a
 	 * long name like Portable Network Graphics to its acronym (PNG).
@@ -58,7 +58,7 @@ public class EvaluationService {
 		return acr.toUpperCase();
 	}
 
-	/**
+	/** Completed
 	 * 3. Determine if a triangle is equilateral, isosceles, or scalene. An
 	 * equilateral triangle has all three sides the same length. An isosceles
 	 * triangle has at least two sides the same length. (It is sometimes specified
@@ -144,7 +144,7 @@ public class EvaluationService {
 
 	}
 
-	/**
+	/** Completed
 	 * 4. Given a word, compute the scrabble score for that word.
 	 * 
 	 * --Letter Values-- Letter Value A, E, I, O, U, L, N, R, S, T = 1; D, G = 2; B,
@@ -198,7 +198,7 @@ public class EvaluationService {
 		return score;
 	}
 
-	/**
+	/** Completed
 	 * 5. Clean up user-entered phone numbers so that they can be sent SMS messages.
 	 * 
 	 * The North American Numbering Plan (NANP) is a telephone numbering system used
@@ -259,7 +259,7 @@ public class EvaluationService {
 		
 	}
 
-	/**
+	/** Completed
 	 * 6. Given a phrase, count the occurrences of each word in that phrase.
 	 * 
 	 * For example for the input "olly olly in come free" olly: 2 in: 1 come: 1
@@ -272,11 +272,14 @@ public class EvaluationService {
 		// TODO Write an implementation for this method declaration
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		
-		String[] phrase = string.split(" ");
-		int count = 1;
+		String[] phrase = string.split("\\W+");
 		
 		for(String word : phrase) {
-			map.put(word, count);
+				if(map.containsKey(word)) {
+					map.put(word, map.get(word + 1));
+				} else {
+					map.put(word, 1);
+				}
 		}
 		
 		/* for(int i = 0; i < phrase.length; i++) {
@@ -329,18 +332,36 @@ public class EvaluationService {
 		private List<T> sortedList;
 
 		public int indexOf(T t) {
+			List<Integer> numbers = new ArrayList();
+			int value;
 			
-			/*while() {
-				int mid = () /2;
-					if() {
-					} else if() {
-					} else if() {
-					}
-					return index;
+			if(sortedList.get(0) instanceof String) {
+				for(T s : sortedList) {
+					numbers.add((int) s);
 				}
-			}*/
-			// TODO Write an implementation for this method declaration
-			return 0;
+				value = Integer.valueOf((String) t);
+			} else {
+				for(T s : sortedList) {
+					numbers.add((int) s);
+				}
+				value = (int) t;
+			}
+			
+			int start = 0;
+			int end = sortedList.size();
+			
+			while(start < end) {
+				int mid = (end + start) / 2;
+				if(numbers.get(mid) == value) {
+					return mid;
+				} else if(numbers.get(mid) < value) {
+					start = mid - 1;
+				} else {
+					end = mid;
+				}
+			}
+
+			return -1;
 		}
 
 		public BinarySearch(List<T> sortedList) {
@@ -431,7 +452,7 @@ public class EvaluationService {
 		}
 	}
 
-	/**
+	/** Completed
 	 * 10. Compute the prime factors of a given natural number.
 	 * 
 	 * A prime number is only evenly divisible by itself and 1.
@@ -503,7 +524,7 @@ public class EvaluationService {
 
 	}
 
-	/**
+	/** Completed
 	 * 12. Given a number n, determine what the nth prime is.
 	 * 
 	 * By listing the first six prime numbers: 2, 3, 5, 7, 11, and 13, we can see
@@ -611,7 +632,33 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isValidIsbn(String string) {
-		// TODO Write an implementation for this method declaration
+		string = string.replaceAll("-", "");
+		string = string.replaceAll(" ", "");
+		
+		int sum = 0;
+		int digit = 0;
+		char ch = '\0';
+		
+		for(int i = 1; i < 9; i++) {
+			ch = string.charAt(i - 1);
+			digit = Character.getNumericValue(ch);
+			sum += (i * digit);
+			System.out.println(sum);
+		}
+		
+		ch = string.charAt(9);
+		ch = Character.toUpperCase(ch);
+		if(ch == 'X') {
+			sum += (10*10);
+		} else {
+			digit = Character.getNumericValue(ch);
+			sum += (digit * 10);
+		}
+		
+		if(sum % 11 == 0) {
+			return true;
+		}
+		
 		return false;
 	}
 
@@ -629,8 +676,18 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isPangram(String string) {
-		// TODO Write an implementation for this method declaration
-		return false;
+		if(string.length() < 26) {
+			return false;
+		}
+		string = string.toLowerCase();
+		for(char ch = 'a'; ch <= 'z'; ch++) {
+			if(string.indexOf(ch) < 0){
+				return false;
+			}
+		}
+		
+		return true;
+		
 	}
 
 	/**
@@ -642,6 +699,8 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Temporal getGigasecondDate(Temporal given) {
+		
+		
 		// TODO Write an implementation for this method declaration
 		return null;
 	}
