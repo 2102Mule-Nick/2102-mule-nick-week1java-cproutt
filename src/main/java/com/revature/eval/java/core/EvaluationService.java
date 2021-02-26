@@ -626,8 +626,8 @@ public class EvaluationService {
 					
 					decoded_string = decoded_string + tebLetraMayus;
 				} else {
-					int letraMayus = alphabet1.indexOf(letra);
-					char tebLetraMayus = tebahpla1.charAt(letraMayus);
+					int index = alphabet1.indexOf(letra);
+					char tebLetraMayus = tebahpla1.charAt(index);
 					
 					decoded_string = decoded_string + tebLetraMayus;
 				}
