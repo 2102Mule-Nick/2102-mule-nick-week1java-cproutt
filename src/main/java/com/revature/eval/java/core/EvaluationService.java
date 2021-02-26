@@ -3,6 +3,7 @@ package com.revature.eval.java.core;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -332,7 +333,7 @@ public class EvaluationService {
 		private List<T> sortedList;
 
 		public int indexOf(T t) {
-			List<Integer> numbers = new ArrayList();
+			/*List<Integer> numbers = new ArrayList<Integer>();
 			int value;
 			
 			if(sortedList.get(0) instanceof String) {
@@ -359,7 +360,7 @@ public class EvaluationService {
 				} else {
 					end = mid;
 				}
-			}
+			}*/
 
 			return -1;
 		}
@@ -397,7 +398,7 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String toPigLatin(String string) {
-		//String con = "bcdfghjklmnpqrstvwxyz";
+		// String con = "bcdfghjklmnpqrstvwxyz";
 		String vowels = "aeiou";
 		
 		String newString = "";
@@ -405,7 +406,6 @@ public class EvaluationService {
 		
 		for(int i = 0; i < letters.length; i++) {
 			char letter = letters[i];
-			//char nextLetter = letters[i + 1];
 			if(i == 0) {
 				if(letters[i] == vowels.charAt(i)) {
 					newString = string + "ay";
@@ -435,7 +435,28 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isArmstrongNumber(int input) {
-		int tempNumber, digit, digitCubeSum = 0;
+		if(input < 10) {
+			return true;
+		} else {
+			String numbers = Integer.toString(input);
+			int length = numbers.length();
+			String[] digits = numbers.split("");
+			int sum = 0;
+			
+			for(String string : digits) {
+				int number = Integer.parseInt(string);
+				int num = (int) Math.pow(number, length);
+				sum += num;
+			}
+			if(sum == input) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		
+		
+		/*int tempNumber, digit, digitCubeSum = 0;
 		tempNumber = input;
 		
 		while(tempNumber != 0) {
@@ -449,7 +470,7 @@ public class EvaluationService {
 			return true;
 		} else {
 			return false;
-		}
+		}*/
 	}
 
 	/** Completed
@@ -609,7 +630,7 @@ public class EvaluationService {
 		}
 	}
 
-	/**
+	/** Completed
 	 * 15. The ISBN-10 verification process is used to validate book identification
 	 * numbers. These normally contain dashes and look like: 3-598-21508-8
 	 * 
@@ -643,7 +664,6 @@ public class EvaluationService {
 			ch = string.charAt(i - 1);
 			digit = Character.getNumericValue(ch);
 			sum += (i * digit);
-			System.out.println(sum);
 		}
 		
 		ch = string.charAt(9);
@@ -720,7 +740,22 @@ public class EvaluationService {
 	 */
 	public int getSumOfMultiples(int i, int[] set) {
 		// TODO Write an implementation for this method declaration
-		return 0;
+		
+		int sum = 0;
+		HashSet<Integer> newSet = new HashSet<Integer>();
+		for(int j = 0; j < set.length; j++) {
+			for(int k = 1; k < i; k++) {
+				if(k % set[j] == 0) {
+					newSet.add(k);
+				} 
+			}
+		}
+		Iterator<Integer> iter = newSet.iterator();
+		
+		while(iter.hasNext()) {
+			sum += iter.next();
+		}
+		return sum;
 	}
 
 	/**
@@ -760,8 +795,28 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isLuhnValid(String string) {
-		// TODO Write an implementation for this method declaration
-		return false;
+		 int nDigits = string.length();
+		 
+		    int nSum = 0;
+		    boolean isSecond = false;
+		    for (int i = nDigits - 1; i >= 0; i--) 
+		    {
+		 
+		        int d = string.charAt(i) - '0';
+		 
+		        if (isSecond == true)
+		            d = d * 2;
+		 
+		        // We add two digits to handle
+		        // cases that make two digits 
+		        // after doubling
+		        nSum += d / 10;
+		        nSum += d % 10;
+		 
+		        isSecond = !isSecond;
+		    }
+		    return (nSum % 10 == 0);
+		
 	}
 
 	/**
