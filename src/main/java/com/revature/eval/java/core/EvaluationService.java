@@ -231,8 +231,8 @@ public class EvaluationService {
 	 * NANP-countries, only 1 is considered a valid country code.
 	 */
 	public String cleanPhoneNumber(String string) {
-		String alpha = "abcdefghijklmnopqrstuvwxyz";
-		String symbol = "!@#$%^&*";
+		String alpha = "abc";
+		String symbol = "-@:";
 		
 		if(string.length() < 10){
 			throw new IllegalArgumentException("Must use only have 10 numbers");
@@ -282,15 +282,6 @@ public class EvaluationService {
 					map.put(word, 1);
 				}
 		}
-		
-		/* for(int i = 0; i < phrase.length; i++) {
-			for(int j = 1; j < phrase.length - 1; j++) {
-				if(phrase[i] == phrase[j]) {
-					count++;
-				}
-				map.put(phrase[i], count);
-			}
-		}*/
 		return map;
 	}
 
@@ -338,9 +329,10 @@ public class EvaluationService {
 			
 			if(sortedList.get(0) instanceof String) {
 				for(T s : sortedList) {
-					numbers.add((int) s);
+					int i = Integer.parseInt(s.toString());
+					numbers.add(i);
 				}
-				value = Integer.valueOf((String) t);
+				value = Integer.valueOf(t.toString());
 			} else {
 				for(T s : sortedList) {
 					numbers.add((int) s);
@@ -454,23 +446,6 @@ public class EvaluationService {
 				return false;
 			}
 		}
-		
-		
-		/*int tempNumber, digit, digitCubeSum = 0;
-		tempNumber = input;
-		
-		while(tempNumber != 0) {
-			// Current number
-			digit = tempNumber % 10;
-			digitCubeSum = digitCubeSum + digit * digit * digit;
-			tempNumber /= 10;
-		}
-		
-		if(digitCubeSum == input) {
-			return true;
-		} else {
-			return false;
-		}*/
 	}
 
 	/** Completed
@@ -530,7 +505,7 @@ public class EvaluationService {
 		}
 
 		public String rotate(String string) {
-			String s = "";
+			String s = "".replaceAll("-", "");
 			int len = string.length();
 			for(int i = 0; i < len; i++) {
 				char c = (char)(string.charAt(i) + key);
@@ -614,8 +589,20 @@ public class EvaluationService {
 		 * @return
 		 */
 		public static String encode(String string) {
-			// TODO Write an implementation for this method declaration
-			return null;
+			 String ciphertext = "";
+		        string = string.replaceAll("\\W+", " ").toLowerCase();
+		        for(char c : string.toCharArray())
+		        {
+		            if(Character.isLetter(c))
+		            {
+		                ciphertext += (char) ('a' + ('z' - c));
+		            }
+		            else
+		            {
+		                ciphertext += c;
+		            }
+		        }
+		        return ciphertext;
 		}
 
 		/**
@@ -625,8 +612,28 @@ public class EvaluationService {
 		 * @return
 		 */
 		public static String decode(String string) {
-			// TODO Write an implementation for this method declaration
-			return null;
+			String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			String tebahpla = "ZYXWVUTSRQPONMLKJIHGFEDCBA";
+			String alphabet1 = "abcdefghijklmnopqrstuvxyz";
+			String tebahpla1 = "zyxwvutsrqponmlkjihgfedcba";
+			String decoded_string = "";
+			
+			for(int i = 1; i < string.length(); i++) {
+				char letra = string.charAt(i);
+				if(Character.isUpperCase(letra)) {
+					int letraMayus = alphabet.indexOf(letra);
+					char tebLetraMayus = tebahpla.charAt(letraMayus);
+					
+					decoded_string = decoded_string + tebLetraMayus;
+				} else {
+					int letraMayus = alphabet1.indexOf(letra);
+					char tebLetraMayus = tebahpla1.charAt(letraMayus);
+					
+					decoded_string = decoded_string + tebLetraMayus;
+				}
+			}
+			
+			return decoded_string;
 		}
 	}
 
@@ -654,32 +661,28 @@ public class EvaluationService {
 	 */
 	public boolean isValidIsbn(String string) {
 		string = string.replaceAll("-", "");
-		string = string.replaceAll(" ", "");
+		int length = string.length();
+		if(length != 10) {
+			return false;
+		}
 		
 		int sum = 0;
-		int digit = 0;
-		char ch = '\0';
 		
-		for(int i = 1; i < 9; i++) {
-			ch = string.charAt(i - 1);
-			digit = Character.getNumericValue(ch);
-			sum += (i * digit);
+		for(int i = 0; i < 9; i++) {
+			int digit = string.charAt(i) - '0';
+			if(0 > digit || 9 < digit) {
+				return false;
+			}
+			sum += (digit * (10 - i));
 		}
 		
-		ch = string.charAt(9);
-		ch = Character.toUpperCase(ch);
-		if(ch == 'X') {
-			sum += (10*10);
-		} else {
-			digit = Character.getNumericValue(ch);
-			sum += (digit * 10);
+		char last = string.charAt(9);
+		if(last != 'X' && (last < '0' || last > '9')) {
+			return false;
 		}
+		sum += ((last == 'X') ? 10 : (last - '0'));
 		
-		if(sum % 11 == 0) {
-			return true;
-		}
-		
-		return false;
+		return (sum % 11 == 0);
 	}
 
 	/**
@@ -725,7 +728,7 @@ public class EvaluationService {
 		return null;
 	}
 
-	/**
+	/** Completed
 	 * 18. Given a number, find the sum of all the unique multiples of particular
 	 * numbers up to but not including that number.
 	 * 
@@ -795,31 +798,51 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isLuhnValid(String string) {
-		 int nDigits = string.length();
-		 
-		    int nSum = 0;
-		    boolean isSecond = false;
-		    for (int i = nDigits - 1; i >= 0; i--) 
-		    {
-		 
-		        int d = string.charAt(i) - '0';
-		 
-		        if (isSecond == true)
-		            d = d * 2;
-		 
-		        // We add two digits to handle
-		        // cases that make two digits 
-		        // after doubling
-		        nSum += d / 10;
-		        nSum += d % 10;
-		 
-		        isSecond = !isSecond;
-		    }
-		    return (nSum % 10 == 0);
+		string = string.replaceAll(" ", "");
+		string = string.replaceAll("-", "");
+		string = string.replaceAll("a", "");
+		/*int[] ints = new int[string.length()];
+		for(int i = 0; i < string.length(); i++) {
+			ints[i] = Integer.parseInt(string.substring(i, i + 1));
+		}
+		
+		for(int i = ints.length - 2; i >= 0; i = i - 2) {
+			int j = ints[i];
+			j = j * 2;
+			
+			if(j > 9) {
+				j = j % 10 + 1;
+			}
+			ints[i] = j;
+		}
+		int sum = 0;
+		for(int i = 0; i < ints.length; i++) {
+			sum += ints[i];
+		}
+		
+	    return (sum % 10 == 0);*/
+	    
+	    int sum = 0;
+        boolean alternate = false;
+        for (int i = string.length() - 1; i >= 0; i--)
+        {
+                int n = Integer.parseInt(string.substring(i, i + 1));
+                if (alternate)
+                {
+                        n *= 2;
+                        if (n > 9)
+                        {
+                                n = (n % 10) + 1;
+                        }
+                }
+                sum += n;
+                alternate = !alternate;
+        }
+        return (sum % 10 == 0);
 		
 	}
 
-	/**
+	/** Completed
 	 * 20. Parse and evaluate simple math word problems returning the answer as an
 	 * integer.
 	 * 
@@ -847,8 +870,25 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int solveWordProblem(String string) {
+		// if string contains minus, muultipled, divided, plus
+		string = string.replaceAll("\\?$", "");
+		String[] split = string.split(" ");
+		int sum = 0;
+		
+		for(int i = 0; i < split.length; i++) {
+			if(split[i].matches("plus")) {
+				sum += Integer.parseInt(split[2]) + Integer.parseInt(split[4]);
+			} else if(split[i].matches("minus")) {
+				sum += Integer.parseInt(split[2]) - Integer.parseInt(split[4]);
+			} else if(split[i].matches("multiplied")) {
+				sum += Integer.parseInt(split[2]) * Integer.parseInt(split[5]);
+			} else if(split[i].matches("divided")) {
+				sum += Integer.parseInt(split[2]) / Integer.parseInt(split[5]);
+			}
+		}
+		
 		// TODO Write an implementation for this method declaration
-		return 0;
+		return sum;
 	}
 
 }
