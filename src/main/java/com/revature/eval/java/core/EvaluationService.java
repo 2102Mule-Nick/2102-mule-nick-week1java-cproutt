@@ -324,10 +324,15 @@ public class EvaluationService {
 		private List<T> sortedList;
 
 		public int indexOf(T t) {
-			/*List<Integer> numbers = new ArrayList<Integer>();
-			int value;
+			List<Integer> numbers = new ArrayList<Integer>();
+			int value = 0;
+
+			for(T s : sortedList) {
+				numbers.add((int) s);
+			}
+			value = (int) t;
 			
-			if(sortedList.get(0) instanceof String) {
+			/*if(sortedList.get(0) instanceof String) {
 				for(T s : sortedList) {
 					int i = Integer.parseInt(s.toString());
 					numbers.add(i);
@@ -338,7 +343,7 @@ public class EvaluationService {
 					numbers.add((int) s);
 				}
 				value = (int) t;
-			}
+			}*/
 			
 			int start = 0;
 			int end = sortedList.size();
@@ -352,7 +357,7 @@ public class EvaluationService {
 				} else {
 					end = mid;
 				}
-			}*/
+			}
 
 			return -1;
 		}
@@ -590,7 +595,7 @@ public class EvaluationService {
 		 */
 		public static String encode(String string) {
 			 String ciphertext = "";
-		        string = string.replaceAll("\\W+", " ").toLowerCase();
+		        string = string.replaceAll("\\W+", "").toLowerCase();
 		        for(char c : string.toCharArray())
 		        {
 		            if(Character.isLetter(c))
@@ -618,18 +623,18 @@ public class EvaluationService {
 			String tebahpla1 = "zyxwvutsrqponmlkjihgfedcba";
 			String decoded_string = "";
 			
-			for(int i = 1; i < string.length(); i++) {
-				char letra = string.charAt(i);
-				if(Character.isUpperCase(letra)) {
-					int letraMayus = alphabet.indexOf(letra);
-					char tebLetraMayus = tebahpla.charAt(letraMayus);
+			for(int i = 0; i < string.length(); i++) {
+				char letter = string.charAt(i);
+				if(Character.isUpperCase(letter)) {
+					int letterIndex = alphabet.indexOf(letter);
+					char letterDec = tebahpla.charAt(letterIndex);
 					
-					decoded_string = decoded_string + tebLetraMayus;
+					decoded_string += letterDec;
 				} else {
-					int index = alphabet1.indexOf(letra);
-					char tebLetraMayus = tebahpla1.charAt(index);
+					int letterIndex = alphabet1.indexOf(letter);
+					char letterDec = tebahpla1.charAt(letterIndex);
 					
-					decoded_string = decoded_string + tebLetraMayus;
+					decoded_string += letterDec;
 				}
 			}
 			
@@ -801,42 +806,20 @@ public class EvaluationService {
 		string = string.replaceAll(" ", "");
 		string = string.replaceAll("-", "");
 		string = string.replaceAll("a", "");
-		/*int[] ints = new int[string.length()];
-		for(int i = 0; i < string.length(); i++) {
-			ints[i] = Integer.parseInt(string.substring(i, i + 1));
-		}
-		
-		for(int i = ints.length - 2; i >= 0; i = i - 2) {
-			int j = ints[i];
-			j = j * 2;
-			
-			if(j > 9) {
-				j = j % 10 + 1;
-			}
-			ints[i] = j;
-		}
-		int sum = 0;
-		for(int i = 0; i < ints.length; i++) {
-			sum += ints[i];
-		}
-		
-	    return (sum % 10 == 0);*/
 	    
 	    int sum = 0;
         boolean alternate = false;
         for (int i = string.length() - 1; i >= 0; i--)
         {
                 int n = Integer.parseInt(string.substring(i, i + 1));
-                if (alternate)
-                {
-                        n *= 2;
-                        if (n > 9)
-                        {
-                                n = (n % 10) + 1;
-                        }
+                if (alternate){
+                   n *= 2;
+                    if (n > 9){
+                        n = (n % 10) + 1;
+                    }
                 }
                 sum += n;
-                alternate = !alternate;
+                //alternate = !alternate;
         }
         return (sum % 10 == 0);
 		
