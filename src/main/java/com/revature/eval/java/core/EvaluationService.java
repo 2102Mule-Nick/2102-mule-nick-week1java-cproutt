@@ -1,7 +1,10 @@
 package com.revature.eval.java.core;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -325,40 +328,31 @@ public class EvaluationService {
 
 		public int indexOf(T t) {
 			List<Integer> numbers = new ArrayList<Integer>();
-			int value = 0;
-
-			for(T s : sortedList) {
-				numbers.add((int) s);
-			}
-			value = (int) t;
-			
-			/*if(sortedList.get(0) instanceof String) {
-				for(T s : sortedList) {
-					int i = Integer.parseInt(s.toString());
-					numbers.add(i);
+			int value;
+			if (sortedList.get(0) instanceof String) {
+				for (T s : sortedList) {
+					numbers.add(Integer.valueOf((String) s));
 				}
-				value = Integer.valueOf(t.toString());
+				value = Integer.valueOf((String) t);
 			} else {
-				for(T s : sortedList) {
+				for (T s : sortedList) {
 					numbers.add((int) s);
 				}
 				value = (int) t;
-			}*/
-			
+			}
 			int start = 0;
 			int end = sortedList.size();
-			
-			while(start < end) {
-				int mid = (end + start) / 2;
-				if(numbers.get(mid) == value) {
-					return mid;
-				} else if(numbers.get(mid) < value) {
-					start = mid - 1;
+
+			while (start < end) {
+				int midpoint = (end + start) / 2;
+				if (numbers.get(midpoint) == value) {
+					return midpoint;
+				} else if (numbers.get(midpoint) < value) {
+					start = midpoint + 1;
 				} else {
-					end = mid;
+					end = midpoint;
 				}
 			}
-
 			return -1;
 		}
 
@@ -503,6 +497,7 @@ public class EvaluationService {
 	 */
 	static class RotationalCipher {
 		private int key;
+		private static final char[] alpha = {'z','y','x','w','v','u','t','s','r','q','p','o','n','m','l','k','j','i','h','g','f','e','d','c','b','a'};
 
 		public RotationalCipher(int key) {
 			super();
@@ -510,7 +505,7 @@ public class EvaluationService {
 		}
 
 		public String rotate(String string) {
-			String s = "".replaceAll("-", "");
+			String s = "";
 			int len = string.length();
 			for(int i = 0; i < len; i++) {
 				char c = (char)(string.charAt(i) + key);
@@ -520,7 +515,7 @@ public class EvaluationService {
 					s += (char)(string.charAt(i) + key);
 				}
 			}
-			return s;
+			return s.replaceAll("-", "");
 		}
 
 	}
@@ -586,28 +581,35 @@ public class EvaluationService {
 	 *
 	 */
 	static class AtbashCipher {
-
+		private static final char[] alpha = {'z','y','x','w','v','u','t','s','r','q','p','o','n','m','l','k','j','i','h','g','f','e','d','c','b','a'};
 		/**
 		 * Question 13
 		 * 
 		 * @param string
 		 * @return
 		 */
+		
+		
 		public static String encode(String string) {
-			 String ciphertext = "";
-		        string = string.replaceAll("\\W+", "").toLowerCase();
-		        for(char c : string.toCharArray())
-		        {
-		            if(Character.isLetter(c))
-		            {
-		                ciphertext += (char) ('a' + ('z' - c));
-		            }
-		            else
-		            {
-		                ciphertext += c;
-		            }
-		        }
-		        return ciphertext;
+			String cipher = "";
+			int count = 0;
+			for(int i = 0; i < string.length(); i++) {
+				if(Character.isAlphabetic(string.charAt(i))) {
+					cipher += alpha[Character.toLowerCase(string.charAt(i)) - 97];
+					count++;
+					if(count % 5 == 0) {
+						cipher += ' ';
+					}
+				}
+				else if(Character.isDigit(string.charAt(i))) {
+					cipher += string.charAt(i);
+					count++;
+					if(count % 5 == 0) {
+						cipher += ' ';
+					}
+				}
+			}
+			return cipher.trim();
 		}
 
 		/**
@@ -617,27 +619,16 @@ public class EvaluationService {
 		 * @return
 		 */
 		public static String decode(String string) {
-			String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-			String tebahpla = "ZYXWVUTSRQPONMLKJIHGFEDCBA";
-			String alphabet1 = "abcdefghijklmnopqrstuvxyz";
-			String tebahpla1 = "zyxwvutsrqponmlkjihgfedcba";
 			String decoded_string = "";
-			
+			// For each character of string move through alphabet
 			for(int i = 0; i < string.length(); i++) {
-				char letter = string.charAt(i);
-				if(Character.isUpperCase(letter)) {
-					int letterIndex = alphabet.indexOf(letter);
-					char letterDec = tebahpla.charAt(letterIndex);
-					
-					decoded_string += letterDec;
-				} else {
-					int letterIndex = alphabet1.indexOf(letter);
-					char letterDec = tebahpla1.charAt(letterIndex);
-					
-					decoded_string += letterDec;
+				if(Character.isAlphabetic(string.charAt(i))) {
+					decoded_string += alpha[Character.toLowerCase(string.charAt(i)) - 97];
+				}
+				else if(Character.isDigit(string.charAt(i))) {
+					decoded_string += string.charAt(i);
 				}
 			}
-			
 			return decoded_string;
 		}
 	}
@@ -691,7 +682,7 @@ public class EvaluationService {
 	}
 
 	/**
-	 * 16. Determine if a sentence is a pangram. A pangram (Greek: παν γράμμα, pan
+	 * 16. Determine if a sentence is a pangram. A pangram (Greek: Ï€Î±Î½ Î³Ï�Î¬Î¼Î¼Î±, pan
 	 * gramma, "every letter") is a sentence using every letter of the alphabet at
 	 * least once. The best known English pangram is:
 	 * 
@@ -718,7 +709,7 @@ public class EvaluationService {
 		
 	}
 
-	/**
+	/** Completed
 	 * 17. Calculate the moment when someone has lived for 10^9 seconds.
 	 * 
 	 * A gigasecond is 109 (1,000,000,000) seconds.
@@ -727,10 +718,10 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Temporal getGigasecondDate(Temporal given) {
-		
-		
-		// TODO Write an implementation for this method declaration
-		return null;
+			if(given instanceof LocalDate) {
+				return ((LocalDate) given).atStartOfDay().plus(1000000000L, ChronoUnit.SECONDS);
+			}
+			return given.plus(1000000000L, ChronoUnit.SECONDS);
 	}
 
 	/** Completed
@@ -804,23 +795,37 @@ public class EvaluationService {
 	 */
 	public boolean isLuhnValid(String string) {
 		string = string.replaceAll(" ", "");
-		string = string.replaceAll("-", "");
-		string = string.replaceAll("a", "");
+		if(string.length() <= 1) {
+			return false;
+		}
+		
+		for(char ch : string.toCharArray()) {
+			if(Character.isDigit(ch) == false) {
+				return false;
+			}
+		}
+		
+		int[] numbers = new int[string.length()];
+		
+		for(int i = 0; i < string.length(); i++) {
+			numbers[i] = Integer.parseInt(string.substring(i, i + 1));
+		}
+		
+		for(int i = numbers.length - 2; i >= 0; i-=2) {
+			int temp = numbers[i] * 2;
+			
+			if(temp > 9) {
+				temp = temp % 10 + 1;
+			}
+			numbers[i] = temp;
+		}
 	    
 	    int sum = 0;
-        boolean alternate = false;
-        for (int i = string.length() - 1; i >= 0; i--)
-        {
-                int n = Integer.parseInt(string.substring(i, i + 1));
-                if (alternate){
-                   n *= 2;
-                    if (n > 9){
-                        n = (n % 10) + 1;
-                    }
-                }
-                sum += n;
-                //alternate = !alternate;
-        }
+        
+	    for(int number : numbers) {
+	    	sum += number;
+	    }
+	    
         return (sum % 10 == 0);
 		
 	}
